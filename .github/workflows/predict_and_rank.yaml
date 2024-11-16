@@ -25,5 +25,5 @@ jobs:
 
     - name: Run prediction script
       env:
-        GITHUB_TOKEN: ${{ secrets.PAMMY_TOKEN }} # Token GitHub con permessi di scrittura sul repository
+        PAMMY_TOKEN: ${{ secrets.PAMMY_TOKEN }} # Token GitHub con permessi di scrittura sul repository
       run: python scripts/predict_stock_growth.py
