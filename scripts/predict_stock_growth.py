@@ -6,8 +6,8 @@ from sklearn.ensemble import RandomForestClassifier
 import numpy as np
 from github import Github, GithubException
 
-FMP_API_KEY = os.getenv("FMP_API_KEY")
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
+#FMP_API_KEY = os.getenv("FMP_API_KEY")
+GITHUB_TOKEN = os.getenv("PAMMY_TOKEN")
 REPO_NAME = "pammyhouse/dati-finanziari"
 
 # Lista per raccogliere i dati finanziari
