@@ -196,21 +196,25 @@ def upload_prediction_html(repo, symbol, probability):
 
     file_path = f"results/{symbol.upper()}_RESULT.html"
 
-    html_content = []
-    html_content.append(f"<html><head><title>Previsione per {symbol}</title></head><body>")
-    html_content.append(f"<h1>Previsione per: ({symbol})</h1>")
+    html_content = [
+        f"<html><head><title>Previsione per {symbol}</title></head><body>",
+        f"<h1>Previsione per: ({symbol})</h1>",
+        "<table border='1'><tr><th>Probability</th></tr>",
+        f"<tr><td>{probability}</td></tr>",
+        "</table></body></html>"
+    ]
 
-    html_content.append("<table border='1'><tr><th>Probability</th></tr>")
-    html_content.append("<tr>")
-    html_content.append(f"<td>{probability}</td>")
-    html_content.append("</table></body></html>")
-        
     try:
+        # Ottieni la versione più recente del file
         contents = repo.get_contents(file_path)
-        repo.update_file(contents.path, f"Updated probability for {symbol}", "\n".join(html_content), contents.sha)
-    except Exception as e:
-        # Se il file non esiste, lo creiamo
-        repo.create_file(file_path, f"Created probability for {symbol}", "\n".join(html_content))
+        latest_sha = contents.sha  # Recupera l'ultimo SHA
+        repo.update_file(file_path, f"Updated probability for {symbol}", "\n".join(html_content), latest_sha)
+    except GithubException as e:
+        if e.status == 404:
+            # Se il file non esiste, lo creiamo
+            repo.create_file(file_path, f"Created probability for {symbol}", "\n".join(html_content))
+        else:
+            raise  # Se è un altro errore, sollevalo
 
 # Funzione principale che carica i dati e esegue le operazioni per ogni simbolo
 if __name__ == "__main__":
